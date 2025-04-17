@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Buzzer Race</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles_landing.css') }}">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <a href="{{ url_for('landing') }}">Home</a>
+      <a href="{{ url_for('game') }}">Play Game</a>
+      <a href="{{ url_for('leaderboard_page') }}">Leaderboard</a>
+    </nav>
+  </header>
+
+  <main class="intro">
+    <h1>Welcome to The Buzzer Race!</h1>
+    <p>A game like many others...</p>
+    <ul>
+      <li>Play each week.</li>
+      <li>Answer quickly and accurately.</li>
+      <li>Make your name on the leaderboards.</li>
+    </ul>
+    <a href="{{ url_for('game') }}" class="btn-start">Start Playing</a>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 The Buzzer Race</p>
+  </footer>
+</body>
+</html>

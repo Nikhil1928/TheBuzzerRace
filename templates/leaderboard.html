@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles_leaderboard.css') }}">
+</head>
+<body>
+   <div class="header-box">
+    <h2>Leaderboard</h2>
+</div>
+<div id="leaderboard-container" class="leaderboard-error"></div>
+<!-- 🎯 Only individual level boxes now -->
+<div class="leaderboard-row">
+    <div class="leaderboard-column">
+        <h3>Novice</h3>
+        <div class="leaderboard-entries" id="novice-entries"></div>
+    </div>
+    <div class="leaderboard-column">
+        <h3>Intermediate</h3>
+        <div class="leaderboard-entries" id="intermediate-entries"></div>
+    </div>
+    <div class="leaderboard-column">
+        <h3>Advanced</h3>
+        <div class="leaderboard-entries" id="advanced-entries"></div>
+    </div>
+</div>
+</div>
+
+        <button id="homeBtn" class="footer-button">Back to Home</button>
+    </div>
+    <script src="{{ url_for('static', filename='leaderboard.js') }}"></script>
+</body>
+</html>

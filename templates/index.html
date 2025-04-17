@@ -1,0 +1,90 @@
+<!-- 👀 DEBUG MARKER: version_2025_0414 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Buzzer Race</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+
+  <!-- 🔐 AUTH SCREEN -->
+<div id="auth-screen" class="centered-screen visible">
+  <h1 class="header-title">Welcome to The Buzzer Race</h1>
+
+      <form id="auth-form">
+        <input type="text" id="auth-username" class="form-input" placeholder="Username" required>
+        <div id="username-warning" class="warning-text"></div>
+        <input type="password" id="auth-password" class="form-input" placeholder="Password" required>
+        <input type="email" id="auth-email" class="form-input" placeholder="Email (only for registration)">
+
+        <select id="auth-level" class="form-input">
+          <option value="">Select Level</option>
+          <option value="Novice">Novice</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+
+        <div class="auth-buttons">
+          <button type="button" id="loginBtn">Login</button>
+          <button type="button" id="registerBtn">Register</button>
+          <button type="button" id="forgotPasswordBtn">Forgot Password</button>
+        </div>
+      </form>
+
+      <div id="auth-error" class="error-message"></div>
+    </div>
+  </div>
+
+  <!-- 🔐 PASSWORD RESET SCREEN -->
+  <div id="reset-screen" class="centered-screen hidden">
+    <h2 class="header-title">Reset Password</h2>
+    <input type="email" id="reset-email" class="form-input" placeholder="Enter your email" required>
+    <button type="button" id="sendResetLink">Send Reset Link</button>
+    <div id="reset-message" class="error-message"></div>
+    <button type="button" id="backToAuthBtn">Back to Login</button>
+  </div>
+
+  <!-- 🎮 DIFFICULTY SELECTION -->
+  <div id="difficulty-screen" class="game-screen hidden">
+    <h2 class="header-title">Select Difficulty</h2>
+    <div class="difficulty-buttons">
+      <button type="button" id="diff-novice" class="difficulty-btn novice" data-level="novice">Novice</button>
+      <button type="button" id="diff-intermediate" class="difficulty-btn intermediate" data-level="intermediate">Intermediate</button>
+      <button type="button" id="diff-advanced" class="difficulty-btn advanced" data-level="advanced">Advanced</button>
+    </div>
+  </div>
+
+  <!-- 🎯 GAME SCREEN -->
+  <div id="game" class="game-screen hidden">
+    <div class="game-card">
+      <div class="game-info-bar">
+        <div id="score">Score: 0</div>
+        <div id="questionNumber">Question 1 of 10</div>
+      </div>
+
+      <div id="question" class="question-box"></div>
+
+      <div class="buzz-section">
+        <button type="button" id="buzzButton" class="buzz-button">Buzz</button>
+        <div id="timerDisplay" class="timer-text"></div>
+      </div>
+
+      <div class="answer-section hidden">
+        <input type="text" id="answerInput" class="form-input" placeholder="Type your answer here" />
+        <button type="button" id="submitAnswer" class="submit-button">Submit Answer</button>
+      </div>
+
+      <div id="result" class="result-box"></div>
+    </div>
+  </div>
+
+  <!-- JS FILES -->
+  <script src="{{ url_for('static', filename='auth.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
+

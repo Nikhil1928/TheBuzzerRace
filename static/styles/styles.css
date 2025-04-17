@@ -1,0 +1,413 @@
+/* === GENERAL TYPOGRAPHY === */
+.header-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+
+/* === FORM INPUTS === */
+.form-input {
+  margin: 10px auto;
+  padding: 10px;
+  display: block;
+  max-width: 300px;
+  width: 90%;
+  box-sizing: border-box;
+}
+
+/* === BUTTON STYLES === */
+.auth-buttons button,
+.difficulty-buttons button,
+#buzzButton,
+#submitAnswer,
+#exitButton,
+#leaderboardButton,
+#changeDifficultyButton {
+  margin: 10px 5px;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+}
+/* Visibility toggles (for JS use) */
+.hidden {
+  display: none !important;
+}
+.visible {
+  display: block !important;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+.margin-top-lg {
+  margin-top: 20px;
+}
+
+.difficulty-buttons button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* === ERROR MESSAGES === */
+.error-message {
+  color: white;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.game-info-bar {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+.warning-text {
+  color: orange;
+  font-size: 0.85em;
+  margin-top: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+/* === GAME SCREEN QUESTION BOX === */
+/* === QUESTION BOX === */
+.question-box {
+  height: 4.5em; /* ≈ 3 lines @ line-height 1.5em */
+  overflow: hidden;
+  background-color: #f0f0f0;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  padding: 12px 15px;
+  font-size: 1.3em;
+  line-height: 1.5em;
+  margin-bottom: 30px;
+  box-sizing: border-box;
+  text-align: center;
+  word-wrap: break-word;
+}
+/* 🎮 Game Card Wrapper */
+/* 📦 Fixed question layout container */
+.game-card {
+  width: 600px;
+  height: 350px;
+  margin: 25px auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* === TIMER STYLES === */
+.timer-text {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 🎯 Controls */
+.buzz-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.buzz-button {
+  background-color: #963484;
+  color: white;
+  font-size: 1.2em;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.buzz-button:hover {
+  background-color: #7a296b;
+}
+
+#answerInput {
+  margin-top: 20px;
+}
+
+#submitAnswer {
+  margin-top: 10px;
+}
+
+#result {
+  margin-top: 20px;
+}
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #3066BE;
+    margin: 0;
+}
+#welcome-header {
+    font-size: 2.5rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: Arial, sans-serif;
+}
+
+#auth-level {
+    height: 40px;
+    padding: 0 12px;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+    background-color: #963484;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+
+    text-align-last: center;
+    direction: rtl;
+    display: inline-block;
+
+    /* 💣 Remove native arrow */
+    appearance: none;
+    -webkit-appearance: none;  /* Safari/Chrome */
+    -moz-appearance: none;     /* Firefox */
+    background-image: none;    /* Edge/FF fallback */
+}
+}
+
+/* Game screen styles (including your existing #game styles) */
+.game-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* ✅ vertical center */
+  align-items: center;      /* ✅ horizontal center */
+  text-align: center;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  height: 100vh;             /* ✅ important to stretch full screen */
+  box-sizing: border-box;
+}
+
+/* Difficulty selection specific styles */
+.difficulty-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.difficulty-btn {
+    font-size: 1.2em;
+    padding: 15px 30px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 80%;
+    max-width: 300px;
+}
+
+.difficulty-btn.novice {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.difficulty-btn.intermediate {
+    background-color: #FFA500;
+    color: white;
+}
+
+.difficulty-btn.advanced {
+    background-color: #963484;
+    color: white;
+}
+
+.difficulty-btn:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+#score, #questionNumber, #timerElement, #difficulty-display {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+button, input {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+#buzzButton {
+    display: block;
+    margin: 0 auto;
+    background-color: #963484;
+    color: white;
+}
+
+#submitAnswer, #exitButton {
+    display: block;
+    margin: 0 auto;
+    background-color: #ddd;
+}
+
+#result {
+    font-size: 1.2em;
+    margin-top: 20px;
+    color: #333;
+    max-height: 400px;
+    overflow-y: auto;
+    text-align: center;
+    width: 100%;
+}
+
+.summary-block {
+  margin-bottom: 15px;
+}
+.summary-item {
+    margin-bottom: 40px;
+    padding: 15px;
+    border-bottom: 2px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+/* New styles for game info section */
+#game-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+/* Game over screen specific styles */
+#game-over {
+    text-align: center;
+}
+
+#final-score {
+    font-size: 1.5em;
+    margin: 20px 0;
+    color: #963484;
+}
+/* ✨ Centering & layout for login/register screen */
+.centered-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* ✅ vertical center */
+  align-items: center;      /* ✅ horizontal center */
+  height: 100vh;
+  text-align: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Wrapper for stacking content vertically */
+.auth-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 360px;
+}
+
+/* Form input styles */
+#auth-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+#auth-form .form-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Button row */
+.auth-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.auth-buttons button {
+  padding: 10px 16px;
+  font-size: 0.95rem;
+}
+
+.quiz-summary-card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.quiz-summary-card h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #963484;
+  margin-bottom: 20px;
+}
+
+#final-score {
+  font-size: 1.5em;
+  margin: 20px 0;
+  color: #963484;
+}
+
+.summary-item {
+  margin-bottom: 30px;
+  padding: 15px;
+  border-bottom: 2px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  text-align: left;
+}
+
+#result {
+  font-size: 1.1em;
+  margin-top: 20px;
+  color: #333;
+  max-height: 400px;
+  overflow-y: auto;
+}

@@ -1,0 +1,12 @@
+body {
+  background-color: #003366;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin-top: 80px;
+}
+input, button {
+  margin: 10px;
+  padding: 12px;
+  font-size: 16px;
+}
