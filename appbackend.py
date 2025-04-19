@@ -7,10 +7,12 @@ from flask_talisman import Talisman
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
 from dotenv import load_dotenv
+from datetime import datetime
 import sqlite3
 import sys
 import os
 import re
+import pytz
 from datetime import timedelta
 
 # ─────────────────────────────
@@ -31,7 +33,8 @@ app.config.update({
     'MAIL_PASSWORD': os.environ.get("MAIL_PASSWORD"),
     'MAIL_DEFAULT_SENDER': os.environ.get("MAIL_DEFAULT_SENDER", "no-reply@thebuzzerrace.com")
 })
-
+CST = pytz.timezone("US/Central")
+START_DATE = CST.localize(datetime(2025, 4, 7, 0, 0, 0))
 mail = Mail(app)
 csrf = CSRFProtect(app)
 limiter = Limiter(key_func=get_remote_address)
@@ -75,18 +78,27 @@ def get_db_connection():
 # ─────────────────────────────
 # 🌐 Routes
 # ─────────────────────────────
+def get_current_week():
+    now = datetime.now(CST)
+    delta = now - START_DATE
+    return max(1, (delta.days // 7) + 1)
+
 @app.route("/")
 def landing():
     return render_template("landing.html")
 
 @app.route("/game")
 def game():
-    return render_template("index.html")  # This is your current game screen
+    # Optional: check session first
+    if "user_id" not in session:
+        return redirect(url_for("login_page"))
+    return render_template("index.html")  # actual game screen
 
 @app.route("/questions", methods=["GET"])
 def get_questions():
-    week = request.args.get('week')
+    week = request.args.get('week') or get_current_week()  # ✅ use query param OR fallback
     difficulty = request.args.get('difficulty')
+
     db = get_db_connection()
     questions = db.execute(
         "SELECT * FROM questions WHERE week = ? AND difficulty = ? ORDER BY series DESC, RANDOM()",
@@ -94,6 +106,7 @@ def get_questions():
     ).fetchall()
     db.close()
     return jsonify([dict(q) for q in questions])
+
 
 @app.route("/submit_score", methods=["POST"])
 def submit_score():
@@ -106,14 +119,14 @@ def submit_score():
         user_id = session.get("user_id")
         score = data.get("score")
         difficulty = data.get("difficulty")
-
+        week = get_current_week()
         if not score or not difficulty:
             return jsonify({"status": "error", "message": "Missing score or difficulty"}), 400
 
         db = get_db_connection()
         db.execute(
-            "INSERT INTO scores (user_id, username, score, difficulty) VALUES (?, ?, ?, ?)",
-            (user_id, username, score, difficulty)
+            "INSERT INTO scores (user_id, username, score, difficulty, week) VALUES (?, ?, ?, ?, ?)",
+            (user_id, username, score, difficulty, week)
         )
         db.commit()
         db.close()
@@ -125,24 +138,34 @@ def submit_score():
 
 @app.route("/leaderboard", methods=["GET"])
 def leaderboard():
+    week = request.args.get("week", get_current_week())  # 🆕 allow ?week=2
     db = get_db_connection()
     scores_by_difficulty = {}
+
     for diff in ['novice', 'intermediate', 'advanced']:
         scores = db.execute("""
             SELECT username, ROUND(MAX(score), 1) as score
             FROM scores
-            WHERE difficulty = ?
+            WHERE difficulty = ? AND week = ?
             GROUP BY username
             ORDER BY score DESC
             LIMIT 10
-        """, (diff,)).fetchall()
+        """, (diff, week)).fetchall()
         scores_by_difficulty[diff] = [dict(s) for s in scores]
+
     db.close()
-    return jsonify(scores_by_difficulty)
+    return jsonify({
+    "week": week,
+    "scores": scores_by_difficulty
+})
 
 @app.route("/leaderboard_page")
 def leaderboard_page():
     return render_template("leaderboard.html")
+
+@app.route("/register_page", methods=["GET"])
+def register_page():
+    return render_template("register.html")
 
 @csrf.exempt
 @limiter.limit("10 per minute")
@@ -203,10 +226,15 @@ def confirm_email(token):
         db.execute("UPDATE users SET email_verified = 1 WHERE email = ?", (email,))
         db.commit()
         db.close()
-        return redirect(url_for('home', confirmed=1)), 200
+        print(f"✅ Email confirmed: {email}")
+        return redirect(url_for('login_page', confirmed=1))  # 🔁 redirect to login with param
     except Exception as e:
         print(f"⚠️ Confirm failed: {e}")
-        return "Confirmation link expired or invalid.", 400
+        return redirect(url_for('login_page', confirmed=0))  # 🔁 still redirect, just with fail state
+
+@app.route("/login")
+def login_page():
+    return render_template("login.html")
 
 @csrf.exempt
 @limiter.limit("5 per minute")
@@ -314,6 +342,26 @@ def session_user():
         "username": None,
         "level": None
     }), 200
+
+@app.route("/played_levels", methods=["GET"])
+def played_levels():
+    if "user_id" not in session:
+        return jsonify({"status": "error", "message": "Not logged in"}), 401
+
+    user_id = session["user_id"]
+    db = get_db_connection()
+    rows = db.execute(
+        "SELECT DISTINCT difficulty FROM scores WHERE user_id = ?",
+        (user_id,)
+    ).fetchall()
+    db.close()
+
+    played = [row["difficulty"].lower() for row in rows]
+    return jsonify({"status": "success", "played": played})
+
+@app.route("/current_week", methods=["GET"])
+def current_week():
+    return jsonify({"week": get_current_week()})
 
 @app.errorhandler(400)
 def handle_bad_request(e):

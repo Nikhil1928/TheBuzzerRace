@@ -1,0 +1,23 @@
+<!-- templates/login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login – The Buzzer Race</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+  <div class="centered-screen visible">
+    <h1 class="header-title">Login to Play</h1>
+    <form id="login-form">
+      <input type="text" id="login-username" class="form-input" placeholder="Username" required>
+      <input type="password" id="login-password" class="form-input" placeholder="Password" required>
+      <div id="login-error" class="error-message"></div>
+      <button type="button" id="loginBtn">Login</button>
+    </form>
+  </div>
+  <script src="{{ url_for('static', filename='login.js') }}"></script>
+</body>
+</html>

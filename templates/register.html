@@ -1,0 +1,31 @@
+<!-- templates/register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register – The Buzzer Race</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+  <div class="centered-screen visible">
+    <h1 class="header-title">Create Your Account</h1>
+    <form id="register-form">
+      <input type="text" id="register-username" class="form-input" placeholder="Username" required>
+      <div id="username-warning" class="warning-text"></div>
+      <input type="email" id="register-email" class="form-input" placeholder="Email" required>
+      <input type="password" id="register-password" class="form-input" placeholder="Password" required>
+      <select id="register-level" class="form-input" required>
+        <option value="">Select Level</option>
+        <option value="Novice">Novice</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+      </select>
+      <div id="register-error" class="error-message"></div>
+      <button type="button" id="registerBtn">Register</button>
+    </form>
+  </div>
+  <script src="{{ url_for('static', filename='register.js') }}"></script>
+</body>
+</html>

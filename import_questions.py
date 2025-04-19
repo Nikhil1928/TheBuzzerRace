@@ -6,7 +6,7 @@ import os
 # 🧠 CONFIGURATION
 # ─────────────────────────────
 DB_PATH = os.path.join(os.path.dirname(__file__), "quiz.db")
-CSV_PATH = os.path.join(os.path.dirname(__file__), "week2_questions.csv")
+CSV_PATH = os.path.join(os.path.dirname(__file__), "week3_questions.csv")
 
 # ─────────────────────────────
 # 🚀 LOAD QUESTIONS

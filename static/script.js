@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const fromLogin = params.get("fromLogin");
   const questionElement = document.getElementById('question');
   const buzzButton = document.getElementById('buzzButton');
   const answerInput = document.getElementById('answerInput');
@@ -19,6 +21,49 @@ document.addEventListener('DOMContentLoaded', () => {
   window.leaderboardButton = leaderboardButton;
   window.changeDifficultyButton = changeDifficultyButton;
   window.showScreen = showScreen;
+
+function disablePlayedLevels(playedLevels) {
+  playedLevels.forEach(level => {
+    const btn = document.getElementById(`diff-${level}`);
+    if (btn) {
+      btn.disabled = true;
+      btn.style.opacity = "0.3";
+      btn.title = "You've already played this level.";
+    }
+  });
+}
+
+fetch('/session_user')
+    .then(res => {
+      if (!res.ok) {
+        console.warn("⚠️ Not logged in — redirecting to login.");
+        window.location.href = "/login";
+        return null;
+      }
+      return res.json();
+    })
+    .then(data => {
+  if (!data) return;
+  window.sessionUser = data || {};
+  window.sessionUserLevel = data?.level || "Novice";
+
+  // ✅ Show correct screen
+  showScreen('difficulty-screen');
+
+  // 🔁 FETCH played levels AFTER session is loaded
+  fetch('/played_levels')
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+        const played = data.played || [];
+        disablePlayedLevels(played);
+      }
+    })
+    .catch(err => {
+      console.error("❌ Error fetching played levels:", err);
+    });
+})
+
 
   if (submitAnswer) {
     submitAnswer.disabled = false;
@@ -134,9 +179,13 @@ function showScreen(screenId) {
     currentDifficulty = difficulty;
     showScreen('game');
 
-    fetchQuestions('1', difficulty).then(data => {
-      currentQuestions = data.filter(q => q.series === 'main');
-      currentTiebreakers = data.filter(q => q.series === 'tiebreaker');
+    fetch('/current_week')
+  .then(res => res.json())
+  .then(data => {
+    const week = data.week;
+    fetchQuestions(week, difficulty).then(qData => {
+      currentQuestions = qData.filter(q => q.series === 'main');
+      currentTiebreakers = qData.filter(q => q.series === 'tiebreaker');
       currentQuestionIndex = 0;
       score = 0;
       inTiebreaker = false;
@@ -146,7 +195,11 @@ function showScreen(screenId) {
       scoreElement.textContent = `Score: ${score.toFixed(1)}`;
       displayQuestion();
     });
-  }
+  })
+  .catch(err => {
+    console.error("❌ Failed to fetch current week:", err);
+  });
+}
 
 function displayQuestion() {
   if (!questionElement || !submitAnswer || !buzzButton || !answerInput || !questionNumberElement) {

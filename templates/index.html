@@ -10,34 +10,6 @@
 </head>
 <body>
 
-  <!-- 🔐 AUTH SCREEN -->
-<div id="auth-screen" class="centered-screen visible">
-  <h1 class="header-title">Welcome to The Buzzer Race</h1>
-
-      <form id="auth-form">
-        <input type="text" id="auth-username" class="form-input" placeholder="Username" required>
-        <div id="username-warning" class="warning-text"></div>
-        <input type="password" id="auth-password" class="form-input" placeholder="Password" required>
-        <input type="email" id="auth-email" class="form-input" placeholder="Email (only for registration)">
-
-        <select id="auth-level" class="form-input">
-          <option value="">Select Level</option>
-          <option value="Novice">Novice</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Advanced">Advanced</option>
-        </select>
-
-        <div class="auth-buttons">
-          <button type="button" id="loginBtn">Login</button>
-          <button type="button" id="registerBtn">Register</button>
-          <button type="button" id="forgotPasswordBtn">Forgot Password</button>
-        </div>
-      </form>
-
-      <div id="auth-error" class="error-message"></div>
-    </div>
-  </div>
-
   <!-- 🔐 PASSWORD RESET SCREEN -->
   <div id="reset-screen" class="centered-screen hidden">
     <h2 class="header-title">Reset Password</h2>
@@ -82,7 +54,6 @@
   </div>
 
   <!-- JS FILES -->
-  <script src="{{ url_for('static', filename='auth.js') }}"></script>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
